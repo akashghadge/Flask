@@ -2,18 +2,23 @@ from flask import Flask, request, render_template
 from datetime import datetime
 app = Flask(__name__)
 
-myList="akash"
+alltodos = []
+newTodo=[]
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=['POST'])
 def Home():
-    if request.method == "POST":
-        print(request.form)
+    if request.method == 'POST':
+        newTodo = [request.form["title"], request.form["desc"]]
+        alltodos.append(newTodo)
+        print(alltodos)
 
-    return render_template('index.html.jinja')
+    return render_template('index.html', allToDo=alltodos)
 
 
-@app.route('/about')
+@app.route('/about', methods=['POST', 'GET'])
 def About():
+    if request.method == "POST":
+        return "hello akash"
     return render_template('about.html')
 
 
