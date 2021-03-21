@@ -185,9 +185,9 @@
         <div class="allToDO">
             {% for elem in allToDo %}
             <div class="todo" style="text-align: center;">
-                <h1 class="todoHead">{{elem[0]}}</h1>
-                <h5 class="todoDesc">{{elem[1]}}</h5>
-                <button class="deleteToDo" >Delete</button>
+                <h1 class="todoHead">{{elem.title}}</h1>
+                <h5 class="todoDesc">{{elem.desc}}</h5>
+                <button class="deleteToDo" name="{{elem[0]}}"><a href="/delete/{{elem.title}}/{{elem.desc}}">delete</a></button>
             </div>
             {% endfor %}
 
@@ -195,18 +195,10 @@
         </div>
     </div>
     <script>
-        // let buttonSubmit = document.getElementById("submitButton");
-        // let titleEle = document.getElementById("titielInput");
-        // let descEle = document.getElementById("descInput");
-
+        // let buttonSubmit = document.querySelector(".deleteTodo");
         // buttonSubmit.addEventListener("click", (e) => {
-        //     let valT = titleEle.value;
-        //     let valD = descEle.value;
-        //     url = "https://localhost:5000/";
-        //     data = {
-        //         title: valT,
-        //         desc = valD
-        //     };
+        //     url = "https://localhost:5000/delete";
+        //     data = buttonSubmit.name;
         //     data = JSON.stringify(data);
         //     para = {
         //         method: "post",
