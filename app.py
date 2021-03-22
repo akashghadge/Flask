@@ -1,21 +1,31 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from datetime import datetime
+from flask_pymongo import MongoClient
 app = Flask(__name__)
 
-alltodos = []
-newTodo = []
+client = MongoClient("mongodb://localhost:27017/")
+myDatabase = client["flask-to-do"]
+myTable = myDatabase["to-do"]
 
 
 @app.route('/', methods=['POST', 'get'])
 def Home():
-    if request.method == 'POST':
-        newTodo = [request.form["title"], request.form["desc"]]
-        newDict = {"title": request.form["title"],
-                   "desc": request.form["desc"]}
-        alltodos.append(newDict)
-        print(alltodos)
-
+    data = myTable.find()
+    alltodos = []
+    for i in data:
+        alltodos.append(i)
     return render_template('index.html', allToDo=alltodos)
+
+
+@app.route('/submit', methods=["post", "get"])
+def submit():
+    if request.method == 'POST':
+        newTodo = {
+            "title": request.form["title"],
+            "desc": request.form["desc"]
+        }
+        res = myTable.insert_one(newTodo)
+        return redirect(url_for("Home"))
 
 
 @app.route('/about', methods=['POST', 'GET'])
@@ -27,13 +37,8 @@ def About():
 
 @app.route('/delete/<title>/<desc>', methods=['POST', 'GET'])
 def delete(title, desc):
-    for i in range(len(alltodos)):
-        print(alltodos[i]["title"])
-        if alltodos[i]["title"] == title:
-            del alltodos[i]
-            break
-    print(alltodos)
-    return "hello"
+    myTable.delete_many({"title": title, "desc": desc})
+    return redirect(url_for("Home"))
 
 
 # without app.run we can't run this app :)

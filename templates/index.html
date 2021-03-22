@@ -154,6 +154,15 @@
             outline: none;
             cursor: pointer;
         }
+
+        .deleteA {}
+
+        .deleteA:hover {
+            outline: none   ;
+            cursor: pointer;
+            color: white;
+            background-color: red;
+        }
     </style>
 </head>
 
@@ -169,7 +178,7 @@
     </div>
     <div class="formDiv">
         <div class="mainForm">
-            <form action="/" method="POST">
+            <form action="/submit" method="POST">
                 <label class="labelForm" for="titel">Title : </label>
                 <input class="inputForm" type="text" name="title" id="titleInput">
                 <br>
@@ -187,7 +196,8 @@
             <div class="todo" style="text-align: center;">
                 <h1 class="todoHead">{{elem.title}}</h1>
                 <h5 class="todoDesc">{{elem.desc}}</h5>
-                <button class="deleteToDo" name="{{elem[0]}}"><a href="/delete/{{elem.title}}/{{elem.desc}}">delete</a></button>
+                <button class="deleteToDo" name="{{elem[0]}}"><a href="/delete/{{elem.title}}/{{elem.desc}}"
+                        class="deleteA">delete</a></button>
             </div>
             {% endfor %}
 
